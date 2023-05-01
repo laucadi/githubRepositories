@@ -32,6 +32,7 @@ export interface Repository {
   downloads_url: string;
   events_url: string;
   fork: boolean;
+  url: string;
   forks: number;
   forks_count: number;
   forks_url: string;

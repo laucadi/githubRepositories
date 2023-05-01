@@ -1,15 +1,22 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Paper,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ImageIcon from "@mui/icons-material/Image";
-import { red } from "@mui/material/colors";
+
 import { Repository } from "../hooks/types";
 import { useFavoriteReposStore } from "../store/favoriteRepos";
+import { parseDate } from "../utils/parseDate";
+
 type CardProps = {
   repository: Repository;
   isFavorite: boolean;
 };
-const colorsss = red[500];
 
 const Card = ({ repository, isFavorite }: CardProps) => {
   const addFavoriteRepo = useFavoriteReposStore(
@@ -18,6 +25,9 @@ const Card = ({ repository, isFavorite }: CardProps) => {
   const removeFavoriteRepo = useFavoriteReposStore(
     (state) => state.addFavoriteRepo
   );
+  const handleOpenUrl = () => {
+    window.open(repository.url, "_blank");
+  };
 
   const handleLike = () => {
     if (isFavorite) {
@@ -30,6 +40,7 @@ const Card = ({ repository, isFavorite }: CardProps) => {
 
   return (
     <ListItem
+      sx={{ m: 1, backgroundColor: "#363732", borderRadius: 2 }}
       secondaryAction={
         <IconButton
           edge="end"
@@ -42,11 +53,12 @@ const Card = ({ repository, isFavorite }: CardProps) => {
       }
     >
       <ListItemAvatar>
-        <Avatar>
-          <ImageIcon />
-        </Avatar>
+        <Avatar src={repository.owner.avatar_url} />
       </ListItemAvatar>
-      <ListItemText primary={repository.name} secondary={repository.name} />
+      <ListItemText
+        primary={repository.name}
+        secondary={`create at: ${parseDate(repository.created_at)}`}
+      />
     </ListItem>
   );
 };
